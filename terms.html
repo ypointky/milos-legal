@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Milos Terms of Use</title><link rel="stylesheet" href="style.css"></head><body><main>
-<nav><a href="#en">English</a><a href="#zh">中文</a><a href="privacy.html">Privacy Policy</a></nav>
+<title>Milos Terms of Use</title><link rel="stylesheet" href="style.css"></head><body data-title-zh="Milos 使用条款" data-title-en="Milos Terms of Use"><main>
+<nav><a href="?lang=en" data-lang="en">English</a><a href="?lang=zh" data-lang="zh">中文</a><a href="privacy.html" data-other="privacy.html">Privacy Policy / 隐私政策</a></nav>
 <article id="en">
 <h1>Milos Terms of Use (EULA)</h1>
 <p class="muted">Last updated: 12 October 2026</p>
@@ -84,4 +84,18 @@
 <h2>12. 联系我们</h2>
 <p>ACORNAWARE PTE. LTD.，新加坡——<a href="mailto:milos@acornaware.com">milos@acornaware.com</a></p>
 </article>
-</main></body></html>
+</main><script>
+(function(){
+  var q=new URLSearchParams(location.search).get('lang'), h=location.hash.replace('#','');
+  var want=(q==='zh'||q==='en')?q:(h==='zh'||h==='en')?h:((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en');
+  function show(l){
+    document.documentElement.lang=l==='zh'?'zh':'en';
+    document.querySelectorAll('article[id]').forEach(function(a){a.hidden=a.id!==l;});
+    document.querySelectorAll('nav a[data-lang]').forEach(function(a){a.classList.toggle('on',a.dataset.lang===l);});
+    document.querySelectorAll('nav a[data-other]').forEach(function(a){a.href=a.dataset.other+'?lang='+l;});
+    try{document.title=l==='zh'?document.body.dataset.titleZh:document.body.dataset.titleEn;}catch(e){}
+  }
+  show(want);
+  document.querySelectorAll('nav a[data-lang]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();show(a.dataset.lang);history.replaceState(null,'',location.pathname+'?lang='+a.dataset.lang);});});
+})();
+</script></body></html>
